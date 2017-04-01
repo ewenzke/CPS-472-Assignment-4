@@ -21,17 +21,18 @@ def handle_function( function ):
 				#Find the functions these lines reference, and add them to the search, recursively
 				references = XrefsFrom(head, 0)			
 				for xref in references:
-					#Here is where there is probably a problem. If the key's value in the dict is 0, it has not
+					#Here is where there is a problem. If the key's value in the dict is 0, it has not
 					#been searched, and we call handle_function again. However, if it is not present, we enter 
-					#the else statement. Trying to get Python to do this has been maddening. 
-					#Adding an 'or not functionsChecked[GetFunctionName(xref.to)]' cause recursive crash.
+					#the else statement. Trying to get Python to catch the 'not present' case has been maddening. 
+					#Adding an 'or not functionsChecked[GetFunctionName(xref.to)]' causes recursive crash.
 					#Adding 'elif GetGunctionName(xref.to) not in functionsChecked' causes the same occurances of
 					#the vulnerable methods to be searched and presented.
 					if GetFunctionName(xref.to) in functionsChecked is 0:
 						handle_function(xref.to) 
 					elif GetFunctionName(xref.to) not in functionsChecked:
+						#Not setting the value to 1 here causes recursive crash
 						functionsChecked[GetFunctionName(xref.to)] = 1
-						handle function(xref.to)
+						handle_function(xref.to)
 					else:
 						functionsChecked[GetFunctionName(xref.to)] = 1
 				#Search the 'call' lines for occurances of the vulnerable methods, if found, print the name of the callee,
