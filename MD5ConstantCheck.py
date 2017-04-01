@@ -4,8 +4,9 @@ MD5Present = False
 print "Checking for MD5 constants..."
 
 for MD5 in MD5Values:
+	#Search for the MD5 values throughout the program, starting from the program's minimum EA
 	addr = FindBinary(min,SEARCH_DOWN,MD5,16)
-	if (min < addr < max):
+	if (min <= addr <= max):
 		print addr
 		MD5Present = True
 
